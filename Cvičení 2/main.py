@@ -13,7 +13,7 @@ ERRORS = {
     "not_a_wave": "Soubor není ve formátu WAVE",
     "not_format_start": "Soubor nemá počátek shluku fmt",
     "bad_format_length": "Soubor má špatně zakódovanou délku shluku fmt",
-    "bad_data_length": "Špatné délka dat"
+    "bad_data_length": "Špatná délka shluku dat"
 }
 
 COMPRESSION = {
