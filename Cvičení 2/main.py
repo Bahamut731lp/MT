@@ -41,7 +41,7 @@ def make_plot(A2, VF, SIG):
     plt.ylabel('A[-]')
     plt.show()
 
-def analyze(path: str, figure=1):
+def analyze(path: str):
     size = os.path.getsize(path)
 
     result = {
@@ -137,8 +137,7 @@ def analyze(path: str, figure=1):
         ROWS = round(channels / COLUMNS)
         t = np.arange(blocks).astype(float)/VF
 
-        plt.figure(figure)
-        plt.title(result["name"])
+        plt.figure(result["name"])
 
         for m in range(0, channels):
             plt.subplot(ROWS, COLUMNS, m+1)
@@ -157,7 +156,7 @@ if __name__ == "__main__":
     index = 1
 
     for wave in WAVES:
-        result = analyze(wave, index)
+        result = analyze(wave)
         print(tabulate(result.items(), tablefmt="rounded_outline"))
         index += 1
 
