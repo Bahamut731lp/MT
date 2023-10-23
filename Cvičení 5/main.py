@@ -61,6 +61,8 @@ class LZW:
             remainder = remainder[len(longest_phrase):]
 
         self.data = result
+
+        print("Slovník komprese:", phrases)
         return True
 
     def decompress(self):
@@ -99,6 +101,8 @@ class LZW:
             remainder = remainder[1:]
 
         self.data = result
+
+        print("Slovník dekomprese:", phrases)
         return True
 
 def main():
