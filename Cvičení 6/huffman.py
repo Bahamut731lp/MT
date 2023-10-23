@@ -29,7 +29,7 @@ class Huffman():
 
                 for letter in word:
                     if letter not in letters:
-                        print("DOPÍČI")
+                        raise LookupError()
 
                     letters[letter].append(str(priority))
 
@@ -67,8 +67,7 @@ class Huffman():
                 index += 1
 
                 if index > len(remainder):
-                    print("JE TO GIGA V KUNDĚ")
-                    break
+                    raise LookupError()
 
             remainder = remainder[len(sequence):]
             result.append(lookup[sequence])
