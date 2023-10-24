@@ -19,9 +19,7 @@ class Huffman():
                     last_two[0],
                     last_two[1]
                 )
-            )
-
-            
+            )            
 
             # Přidání do seznamu sekvencí pro písmena
             for (index, word) in enumerate([x for x,_ in last_two]):

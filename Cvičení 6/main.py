@@ -28,7 +28,6 @@ def main():
             decompressed = driver.decompress(compressed, additional)
 
             matching = data == decompressed
-            ratio = round(len(compressed) / len(decompressed), 2)
 
             results.append(["Label", case])
             results.append(["Algoritmus", driver.__class__.__name__])
@@ -36,7 +35,6 @@ def main():
             results.append(["Komprese", compressed])
             results.append(["Dodatečné", additional])
             results.append(["Dekomprese", decompressed])
-            results.append(["Poměr", ratio])
             results.append(["Shodují se", matching])
 
             print(tabulate(results, headers=headers, tablefmt="rounded_outline"))
