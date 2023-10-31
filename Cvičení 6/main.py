@@ -29,6 +29,7 @@ def main():
 
             matching = data == decompressed
 
+            print("\n\n\n")
             results.append(["Label", case])
             results.append(["Algoritmus", driver.__class__.__name__])
             results.append(["Vstup", data])
@@ -37,7 +38,7 @@ def main():
             results.append(["Dekomprese", decompressed])
             results.append(["Shodují se", matching])
 
-            print(tabulate(results, headers=headers, tablefmt="rounded_outline"))
+            print(tabulate(results, headers=headers, tablefmt="simple"))
 
 if __name__ == "__main__":
     main()

@@ -37,7 +37,6 @@ class Huffman():
             occurences.append(new_pair)
             # Seřazení podle pravděpodobnosti
             occurences = sorted(occurences, key=lambda x: (x[1]), reverse=True)
-            # Připočtení hloubky stromu
 
         # Otočení sekvencí pro písmena
         for sequence in letters:
@@ -49,10 +48,10 @@ class Huffman():
         for letter in data:
             result.append(letters[letter])
 
-        return ("".join(result), letters)
+        return (" ".join(result), letters)
 
     def decompress(self, data: str, tree: dict):
-        remainder = list(data)
+        remainder = list(data.replace(" ", ""))
         lookup = {value:key for key, value in tree.items()}
         result = []
 
