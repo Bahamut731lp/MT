@@ -75,7 +75,7 @@ def parameterize(v):
         Pole strukturovaných dat
     """
 
-    # Zde používáme SimpleNamespace, kterej mi dovolí 
+    # Zde používáme SimpleNamespace, kterej mi dovolí
     # přistupovat ke klíčům slovníku pomocí tečkové notace
     # je to jenom pro syntax sugar, nic víc.
     return [SimpleNamespace(**{"letter": x[0], "freq": x[1] }) for x in v]
@@ -139,7 +139,7 @@ class Arithmetic():
             [(occurences[0].letter, Interval(0, occurences[0].freq))]
         )
 
-        # Předchozí redukce vytvořila list párů, 
+        # Předchozí redukce vytvořila list párů,
         # tak si to převedeme na slovník, ať se s tím líp pracuje
         intervals: dict[str, Interval] = dict(intervals)
         # Interval pro kódování
@@ -163,7 +163,7 @@ class Arithmetic():
         # Pro úspěšné dekódování je potřeba vrátit i
         # - délku slova (abychom věděli, kdy skončit)
         # - rozdělení intervalů (abychom dokázali znaky interpretovat)
-        return (result, intervals, length)
+        return (result, interval, intervals, length)
 
     def decompress(self, data: float, model: dict[str, Interval], length: int):
         """Funkce pro dekomprimaci dat zakódovaných aritmetickým kódováním
@@ -194,7 +194,7 @@ class Arithmetic():
             # Znak a interval znaku
             char = None
             char_interval = None
-            
+
             # Hledání intervalu, ve kterém znak leží
             for key, inter in model.items():
                 is_in_interval = all([
@@ -206,7 +206,7 @@ class Arithmetic():
                     char = key
                     char_interval = inter
                     result.append(char)
-            
+
             # Přepočítané hranice intervalu si uložíme do proměnné,
             # jinak bychom si je měnili uprostřed výpočtu
             new_low = interval.low + char_interval.low * (interval.high - interval.low)
@@ -214,7 +214,7 @@ class Arithmetic():
 
             interval.low = new_low
             interval.high = new_high
-        
+
         # Výsledek vrátíme jako string
         return "".join(result)
 
@@ -230,12 +230,12 @@ def main():
         "Příklad z přednášky Huffman": "ABRAKADABRA",
         "Binární data": "".join([str(x) for x in integers])
     }
-    
+
     for (case, data) in test_suites.items():
         driver = Arithmetic()
         results = []
 
-        (compressed, model, length) = driver.compress(data)
+        (compressed, interval, model, length) = driver.compress(data)
         decompressed = driver.decompress(compressed, model, length)
 
         matching = data == decompressed
@@ -244,6 +244,7 @@ def main():
         results.append(["Label", case])
         results.append(["Vstup", data])
         results.append(["Výstup komprese", compressed])
+        results.append(["Interval", interval])
         results.append(["Model", model])
         results.append(["Délka", length])
         results.append(["Výstup dekomprese", decompressed])
