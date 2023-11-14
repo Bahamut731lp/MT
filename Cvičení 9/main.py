@@ -22,7 +22,7 @@ def pca(image):
     eigenvalues, eigenvectors = np.linalg.eig(covariance)
     # Seřazení vlastních čísel
     sorted_indexes = np.argsort(eigenvalues)
-    print(eigenvalues[sorted_indexes])
+
     eigvecs = eigenvectors[:,sorted_indexes]
     eigenspace = np.matmul(eigvecs, std_deviation)
 
@@ -58,13 +58,22 @@ def main():
     plt.show(block=False)
 
     plt.figure("Porovnání")
-    plt.subplot(1, 2, 1)
+    plt.subplot(2, 2, 1)
     plt.title("Výsledek PCA")
     plt.imshow(np.reshape(result[0], (width, height)), cmap="gray")
     
-    plt.subplot(1, 2, 2)
+    plt.subplot(2, 2, 2)
     plt.title("Výsledek RGB2GRAY")
-    plt.imshow(cv2.cvtColor(image, cv2.COLOR_RGB2GRAY), cmap="gray")
+    plt.imshow(cv2.cvtColor(image.copy(), cv2.COLOR_RGB2GRAY), cmap="gray")
+
+    plt.subplot(2,2,3)
+    plt.title("Histogram PCA")
+    plt.hist(result[0], bins=256)
+
+    plt.subplot(2,2,4)
+    plt.title("Histogram RGB2GRAY")
+    plt.hist(cv2.cvtColor(image.copy(), cv2.COLOR_RGB2GRAY).ravel(), bins=256)
+
     plt.show()
     
 
