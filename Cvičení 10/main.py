@@ -57,6 +57,38 @@ def count_circles(path: Path):
 
     return cimg, len(circles[0,:])
 
+def encode(file: Path):
+    image = cv2.imread(file.as_posix(), cv2.IMREAD_GRAYSCALE) / 255
+    kernel = np.ones((3, 3), np.uint8) 
+
+    # Zakódování pomocí eroze
+    encoded_image = image - cv2.erode(image, kernel, iterations=1)
+
+    # Dekódování pomocí dilatace
+    # TODO: Dilatace mi akorát přidá jeden obrys kolem značky, je potřeba tohle ještě domyslet
+    decoded_image = cv2.dilate(encoded_image, kernel, iterations=1)
+    # Získání souřadnic značek
+    coordinates = np.column_stack(np.where(encoded_image != 0))
+
+    plt.figure("Test")
+    plt.subplot(1, 3, 1)
+    plt.title("Původní obrázek")
+    plt.imshow(image, cmap="gray")
+
+    plt.subplot(1, 3, 2)
+    plt.title("Enkódovaný obrázek")
+    plt.imshow(encoded_image, cmap="gray")
+
+    plt.subplot(1, 3, 3)
+    plt.title("Dekódovaný obrázek")
+    plt.imshow(decoded_image, cmap="gray")
+
+    plt.show()
+    
+    # Vypsání souřadnic značek do konzole
+    print("Souřadnice značek:")
+    print(image.shape, len(coordinates))
+
 def analyze_circles(files):
     no_of_files = len(files)
     subplot_factors = calc_closest_factors(no_of_files)
@@ -72,8 +104,11 @@ def analyze_circles(files):
         plt.imshow(image)
     
     plt.show()
-
+    
 def encode_with_erosion(files):
+    for path in files:
+        image = encode(path)
+
     pass
 
 if __name__ == "__main__":
