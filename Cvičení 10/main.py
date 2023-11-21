@@ -1,4 +1,3 @@
-import math
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,14 +5,14 @@ from pathlib import Path
 
 def calc_closest_factors(c: int):
     """Calculate the closest two factors of c.
-    
+
     Returns:
       [int, int]: The two factors of c that are closest; in other words, the
         closest two integers for which a*b=c. If c is a perfect square, the
         result will be [sqrt(c), sqrt(c)]; if c is a prime number, the result
         will be [1, c]. The first number will always be the smallest, if they
         are not equal.
-    """    
+    """
     if c//1 != c:
         raise TypeError("c must be an integer.")
 
@@ -23,7 +22,7 @@ def calc_closest_factors(c: int):
         if c % i == 0:
             a = i
             b = c//a
-    
+
     return [b, a]
 
 def count_circles(path: Path):
@@ -57,38 +56,6 @@ def count_circles(path: Path):
 
     return cimg, len(circles[0,:])
 
-def encode(file: Path):
-    image = cv2.imread(file.as_posix(), cv2.IMREAD_GRAYSCALE) / 255
-    kernel = np.ones((3, 3), np.uint8) 
-
-    # Zakódování pomocí eroze
-    encoded_image = image - cv2.erode(image, kernel, iterations=1)
-
-    # Dekódování pomocí dilatace
-    # TODO: Dilatace mi akorát přidá jeden obrys kolem značky, je potřeba tohle ještě domyslet
-    decoded_image = cv2.dilate(encoded_image, kernel, iterations=1)
-    # Získání souřadnic značek
-    coordinates = np.column_stack(np.where(encoded_image != 0))
-
-    plt.figure("Test")
-    plt.subplot(1, 3, 1)
-    plt.title("Původní obrázek")
-    plt.imshow(image, cmap="gray")
-
-    plt.subplot(1, 3, 2)
-    plt.title("Enkódovaný obrázek")
-    plt.imshow(encoded_image, cmap="gray")
-
-    plt.subplot(1, 3, 3)
-    plt.title("Dekódovaný obrázek")
-    plt.imshow(decoded_image, cmap="gray")
-
-    plt.show()
-    
-    # Vypsání souřadnic značek do konzole
-    print("Souřadnice značek:")
-    print(image.shape, len(coordinates))
-
 def analyze_circles(files):
     no_of_files = len(files)
     subplot_factors = calc_closest_factors(no_of_files)
@@ -99,18 +66,80 @@ def analyze_circles(files):
         image, circles = count_circles(path)
         print(f"Found {circles} circle(s) in {path.name}")
         index += 1
-        
+
         plt.subplot(subplot_factors[0], subplot_factors[1], index)
         plt.imshow(image)
-    
-    plt.show()
-    
-def encode_with_erosion(files):
-    for path in files:
-        image = encode(path)
 
-    pass
+    plt.show()
+
+def encode_with_erosion(path):
+    image = cv2.imread(path.as_posix(), cv2.IMREAD_GRAYSCALE) / 255
+    kernel = np.ones((3, 3), np.uint8)
+    half_height = image.shape[0] // 2
+
+    # Analyzované prvky v obrázku - horní a dolní polovina obrázku
+    features = [image[:half_height, :], image[half_height:, :]]
+
+    # Slovník grafů, které budou na konci procedury vykresleny.
+    plots = {
+        "Image": image,
+    }
+
+    # Analýza prvků
+    for index, feature in enumerate(features):
+        # Počet souřadnic prvků - počítáme s tím, že na konci bude jenom jedna
+        coordinates_count = len(feature)
+        # Počet iterací eroze
+        iterations = 0
+        # Kopie obrázku pro postupnou erozi
+        encoded_image = feature.copy()
+
+        # Nalezení počtu iterací nutných k zakódování
+        while True:
+            # Zakódování pomocí eroze
+            temporary_image = cv2.erode(encoded_image, kernel)
+            # Updatování počtu souřadnic
+            coordinates_count = len(np.column_stack(np.where(temporary_image != 0)))
+
+            # Pokud jsme ztratili informaci o značkách (a.k.a eroze odstranila už všechno)
+            # Tak to přerušíme a necháme staré výsledky
+            if coordinates_count == 0:
+                break
+
+            # Pokud ještě souřadnice zbyly, přičteme iteraci a nastavíme mezivýsledek
+            iterations += 1
+            encoded_image = temporary_image
+
+        # Přidání zakódovaného obrázku do grafů
+        plots[f"Feature {index} - Enkódovaný"] = encoded_image
+
+        # Získání souřadnic značek
+        coordinates = np.column_stack(np.where(encoded_image != 0))
+
+        print("")
+        print(f"Souřadnice značek (feature {index}): {coordinates[0]}")
+        print(f"Počet iterací: {iterations}")
+        print("")
+
+        # Dekódování pomocí dilatace
+        decoded_image = cv2.dilate(encoded_image, kernel, iterations=iterations)
+        plots[f"Feature {index} - Dekódovaný"] = decoded_image
+
+    # Vykreslení grafů
+    plt.figure("Eroze a dilatace")
+    subplot_factors = calc_closest_factors(len(plots.keys()))
+    index = 1
+
+    for label, image_data in plots.items():
+        plt.subplot(subplot_factors[0], subplot_factors[1], index)
+        plt.title(label)
+        plt.imshow(image_data, cmap="gray")
+
+        index += 1
+
+    # Ukázání okna s grafy
+    plt.show()
 
 if __name__ == "__main__":
     analyze_circles(list(Path("./data").glob("Cv11_c*.bmp")))
-    encode_with_erosion(list(Path("./data").glob("*_merkers.bmp")))
+    encode_with_erosion(Path("./data/Cv11_merkers.bmp"))
