@@ -9,8 +9,6 @@ xor = {
     (1, 1): 0
 }
 
-# Vysláno: [11, 11, 9, 22, 23, 8]
-# Přijato: [3, 11, 11, 22, 23, 0]
 def opravit_inverzni_kod(prijata_data):
     opravena_data = []
     for i in range(0, len(prijata_data), 2):
@@ -40,7 +38,7 @@ def opravit_inverzni_kod(prijata_data):
             data_fixed = binary_data.copy()
             safety_fixed = binary_safety.copy()
 
-            for i in range(0, len(binary_data)):
+            for i, _ in enumerate(binary_data):
                 data_char = binary_data[i]
                 safety_char = binary_safety_inverse[i]
                 fixed_char = xor[data_char, safety_char]
