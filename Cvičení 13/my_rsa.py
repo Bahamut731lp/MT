@@ -8,11 +8,13 @@ from tabulate import tabulate
 import numpy as np
 
 def rsa(string):
-    start = 20
-    end = 100
+    start = 1000
+    end = 10000
     user_input_converted = [ord(x) for x in list(string)]
 
     primes = generate_primes_in_range(start, end)
+
+    print(primes)
 
     # 2 velká prvočísla "p" a "q"
     p, q = random.sample(primes, 2)
@@ -31,9 +33,12 @@ def rsa(string):
     # Privátní klíč
     d = pow(e, -1, phi)
 
-    cyphered = (np.array(user_input_converted.copy(), dtype=np.object_) ** e) % n
+    #cyphered = [(np.array(user_input_converted.copy(), dtype=np.object_) ** e) % n]
+    cyphered = [pow(x, e, n) for x in user_input_converted]
+
     # TODO: Tady zase možný bude něco s typama, chce to prověřit
-    decyphered = (np.copy(cyphered) ** d) % n
+    #decyphered = (np.copy(cyphered) ** d) % n
+    decyphered = [pow(x, d, n) for x in cyphered]
 
     return {
         "original": {
@@ -41,7 +46,7 @@ def rsa(string):
             "numerical": user_input_converted
         },
         "cyphered": {
-            "text": str.join("", [chr(x) for x in list(cyphered)]),
+            "text": "",
             "numerical": list(cyphered)
         },
         "decyphered": {
