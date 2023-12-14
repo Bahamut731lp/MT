@@ -1,11 +1,12 @@
 """
     Modul implementující algoritmus RSA
 """
-import random
 import math
-from sieve import generate_primes_in_range
+import random
+
 from tabulate import tabulate
-import numpy as np
+
+from sieve import generate_primes_in_range
 
 def rsa(string):
     start = 1000
