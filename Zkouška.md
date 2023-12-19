@@ -50,3 +50,18 @@
 2. Zjisti $K = (C - L) / (H - L)$
 3. Zjisti, do intervalu IZ = <ZL, ZH) jakého znaku patří $K$
 4. Spočítej nový interval IN = <L + ZL * (H - L), L + ZH * (H - L)
+
+## LZW
+### Kódování
+1. Vypiš použité znaky ve výchozím řetězci a přiřaď jim čísla (např. pro řetězec abcabcabcabcbcba jsou použité znaky a = 1, b = 2, c = 3)
+2. Najdi nejdelší frázi na vstupu, která existuje ve slovníku, na výstup napiš její číslo (v prvním kroku to je a = 1, výstupem je jedna)
+3. Vytvoř novou frázi, která vznikne nalezenou frází a přidáním jednoho dalšího znaku ze vstupu
+4. Této nové frázi přiřaď číslo
+
+![obrazek](https://github.com/Bahamut731lp/MT/assets/27443880/b5d66417-ae57-4190-9282-db2dfd1009ed)
+
+### Dekódování
+1. Přiřaď k číslům abecedu, např. pro vstup 1234567891 bude a = 1, b = 2, c = 3
+2. Zjisti, jaká fráze je k číslu přiřazena (např. 1 = a)
+3. Vytvoř novou frázi tak, že vezmeš frázi z předchozího kroku a první znak fráze výstupu (v prvním kroku se tedy nedělá)
+4. Pokud je číslo na vstupu větší než jakákoliv fráze ve slovníku, tak je *výstupem minulá fráze + její první znak*
