@@ -28,6 +28,9 @@
 
 7. Nahraď jednotlivé znaky výslednými kódy
 
+![obrazek](https://github.com/Bahamut731lp/MT/assets/27443880/2c8ebcca-7b04-4510-ad34-673f4b59e5df)
+
+
 ### Dekódování
 1. Musíš mít slovník znaků a jakým kódům odpovídají
 2. Hledej nejdelší sekvenci, která odpovídá nějakému znaku
