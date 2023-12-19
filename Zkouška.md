@@ -68,3 +68,38 @@
 
 ![obrazek](https://github.com/Bahamut731lp/MT/assets/27443880/94248eea-cba1-4ebf-93f1-f03cde8f45c7)
 
+## MTF
+### Kódování
+1. Vytvoř si abecedu, např. "abcdefghijklmnopqrstvwxyz"
+2. Postupně ber znaky z výchozí řetězce
+   - Najdi, na kolikátém místě je písmeno v abecedě (index)
+   - tohle číslo si zapiš do výsledku
+   - nalezené písmeno přesuň na začátek abecedy
+3. Opakuj bod 2, dokud nemáš zakódovaný celý řetězec
+
+### Dekódování
+1. Vytvoř si abecedu, např. "abcdefghijklmnopqrstvwxyz"
+2. Postupně ber čísla ze vstupu
+   - Číslo říká pořadí v abecedě, takže najdi znak, který má stejné pořadové číslo jako číslo na vstupu
+   - Tenhle znak si napiš na výstup
+   - Nalezený znak přesuň na začátek abecedy
+3. Opakuj bod 2, dokud máš čísla na vstupu
+
+## BWT
+### Kódování
+1. Ze vstupního řetězce vytvoř matici N*N, kde N je délka vstupního řetězce.
+   - Každý řádek je posunut o jeden znak doprava oproti tomu předchozímu
+2. Tu matici následně lexograficky seřaď (podle abecedy, duh)
+3. Poslední sloupec seřazené matice je výsledek zakódování.
+4. Poznamenej si, na kolikátem řádku je původní slovo v seřazené matici
+
+![obrazek](https://github.com/Bahamut731lp/MT/assets/27443880/5296948b-38d0-4aa2-b619-828e2b04d7bb)
+
+### Dekódování
+1. Vem vstupní řetězec a lexograficky (podle abecedy) ho seřaď
+2. Seřazený řetězec připoj za vstupní řetězec
+3. Nově vzniklý řetězec znovu seřaď a poslední písmena toho seřazeného přidej na konec neseřazeného
+4. Takhle to opakuj, dokud to neuděláš N-krát
+5. Na konci vem číslo řádku z kódování a výsledek na tom samém čísle řádku
+
+![obrazek](https://github.com/Bahamut731lp/MT/assets/27443880/d0ee10ec-5b51-4c26-bc9a-fa8ea39f40a3)
