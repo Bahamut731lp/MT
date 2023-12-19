@@ -65,3 +65,6 @@
 2. Zjisti, jaká fráze je k číslu přiřazena (např. 1 = a)
 3. Vytvoř novou frázi tak, že vezmeš frázi z předchozího kroku a první znak fráze výstupu (v prvním kroku se tedy nedělá)
 4. Pokud je číslo na vstupu větší než jakákoliv fráze ve slovníku, tak je *výstupem minulá fráze + její první znak*
+
+![obrazek](https://github.com/Bahamut731lp/MT/assets/27443880/94248eea-cba1-4ebf-93f1-f03cde8f45c7)
+
